@@ -70,8 +70,6 @@ public class EnemyAI : MonoBehaviour
         //check if on ground
         Vector3 startOffset = transform.position - new Vector3(0, GetComponent<Collider2D>().bounds.extents.y + jumpCheckOffset);
         isGrounded = Physics2D.Raycast(startOffset, -Vector3.up, 0.05f);
-        print(currentWaypoint );
-        print(path.vectorPath.Count);
 
         //get position and direction
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
