@@ -14,6 +14,7 @@ public class playerMovement : MonoBehaviour
     private CapsuleCollider2D collider;
     private Rigidbody2D rbody;
 
+    private bool pvar_Grounded;
     private Vector2 playerMove;
     private Vector2 height;
     
@@ -29,6 +30,8 @@ public class playerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         
+        pvar_Grounded = collider.IsTouchingLayers(ground);
+
         if (Mathf.Abs(Input.GetAxis("walk")) > 0.1)
         {
             playerMove = new Vector2(Input.GetAxis("walk") * playerSpeed, 0);
@@ -39,12 +42,15 @@ public class playerMovement : MonoBehaviour
         }
         print(collider.IsTouchingLayers(ground));
 
-        if (Input.GetAxis("jump") > 0.1 && collider.IsTouchingLayers(ground))
+        if (Input.GetAxis("jump") > 0.1 && pvar_Grounded)
         {
-            rbody.AddForce(new Vector2(0, jumpHeight));
+            rbody.velocity = Vector2.zero;
+            pvar_Grounded = false;
+
+            rbody.AddForce(new Vector2(0f, jumpHeight * 150));
         }
         
-        if (Input.GetAxis("jump") < -0.1)
+        if (Input.GetAxis("jump") < -0.1 && pvar_Grounded)
         {
             collider.size = new Vector2(1, 1);
         }
@@ -52,8 +58,8 @@ public class playerMovement : MonoBehaviour
         {
             collider.size = new Vector2(1, 2);
         }
-        
-        rbody.velocity = playerMove;
+
+        rbody.velocity = new Vector2(playerMove.x, rbody.velocity.y);
     }
 
     
