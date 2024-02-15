@@ -14,8 +14,9 @@ public class playerMovement : MonoBehaviour
     private CapsuleCollider2D collider;
     private Rigidbody2D rbody;
 
+    [HideInInspector] public Vector2 var_GrapplingVelocityOverride;
     private bool pvar_Grounded;
-    private Vector2 playerMove;
+    public Vector2 playerMove;
     private Vector2 height;
     
     // Start is called before the first frame update
@@ -40,7 +41,6 @@ public class playerMovement : MonoBehaviour
         {
             playerMove = Vector2.zero;
         }
-        print(collider.IsTouchingLayers(ground));
 
         if (Input.GetAxis("jump") > 0.1 && pvar_Grounded)
         {
@@ -59,7 +59,7 @@ public class playerMovement : MonoBehaviour
             collider.size = new Vector2(1, 2);
         }
 
-        rbody.velocity = new Vector2(playerMove.x, rbody.velocity.y);
+        rbody.velocity = new Vector2(playerMove.x + var_GrapplingVelocityOverride.x, rbody.velocity.y + var_GrapplingVelocityOverride.y);
     }
 
     
